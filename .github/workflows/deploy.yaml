@@ -29,5 +29,4 @@ jobs:
 
       - name: copy files to s3
         run: |
-          aws s3 cp index.html s3://${{ env.BUCKET_NAME }}/
-          aws s3 cp index.js s3://${{ env.BUCKET_NAME }}/
+          aws s3 sync . s3://${{ env.BUCKET_NAME }}/
