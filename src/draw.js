@@ -15,8 +15,8 @@ export default class DrawBoids {
   }
 
   resize_canvas() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = this.gl.canvas.clientWidth;
+    const height = this.gl.canvas.clientHeight;
     if (this.gl.canvas.width != width || this.gl.canvas.height != height) {
       this.gl.canvas.width = width;
       this.gl.canvas.height = height;
