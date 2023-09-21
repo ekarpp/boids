@@ -1,0 +1,33 @@
+name: AWS S3 deployment
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  AWS_REGION : "eu-west-1"
+  AWS_ROLE: "arn:aws:iam::808601607044:role/GA-boids-deploy"
+  BUCKET_NAME: "boids-bucket"
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  S3deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ env.AWS_ROLE }}
+          role-session-name: GitHub_to_AWS_OIDC
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: copy files to s3
+        run: |
+          aws s3 cp index.html s3://${{ env.BUCKET_NAME }}/
+          aws s3 cp index.js s3://${{ env.BUCKET_NAME }}/
